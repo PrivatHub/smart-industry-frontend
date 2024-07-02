@@ -1,0 +1,12 @@
+{
+  "role": {
+    "super_admin": "超级管理员"
+  },
+  "menu": {
+    "dashboard": {
+      "dashboard": "控制面板",
+      "workbench": "工作平台",
+      "analysis": "数据分析"
+    }
+  }
+}

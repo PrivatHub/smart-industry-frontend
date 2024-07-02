@@ -1,0 +1,12 @@
+{
+  "role": {
+    "super_admin": "Super Admin"
+  },
+  "menu": {
+    "dashboard": {
+      "dashboard": "Dashboard",
+      "workbench": "Workbench",
+      "analysis": "Analysis"
+    }
+  }
+}
