@@ -6,7 +6,7 @@ import { useI18n } from '@/hooks/web/useI18n';
 import { useUserStore } from './user';
 import { useAppStoreWithOut } from './app';
 import { toRaw } from 'vue';
-import { transformObjToRoute, flatMultiLevelRoutes } from '@/router/helper/routeHelper';
+import { flatMultiLevelRoutes, transformObjToRoute } from '@/router/helper/routeHelper';
 import { transformRouteToMenu } from '@/router/helper/menuHelper';
 
 import projectSetting from '@/settings/projectSetting';
@@ -23,6 +23,7 @@ import { getPermCode } from '@/api/sys/user';
 
 import { useMessage } from '@/hooks/web/useMessage';
 import { PageEnum } from '@/enums/pageEnum';
+import home from '@/router/routes/modules/home';
 
 interface PermissionState {
   // Permission code list
@@ -243,6 +244,9 @@ export const usePermissionStore = defineStore({
 
           routeList = flatMultiLevelRoutes(routeList);
           routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
+
+          // 加入固定静态路由
+          routes.push(home);
           break;
       }
 

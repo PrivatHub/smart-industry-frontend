@@ -82,15 +82,15 @@
   </Form>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { computed, reactive, ref, unref } from 'vue';
 
-  import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
+  import { Button, Checkbox, Col, Divider, Form, Input, Row } from 'ant-design-vue';
   import {
-    GithubFilled,
-    WechatFilled,
     AlipayCircleFilled,
+    GithubFilled,
     GoogleCircleFilled,
     TwitterCircleFilled,
+    WechatFilled,
   } from '@ant-design/icons-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
 
@@ -98,8 +98,9 @@
   import { useMessage } from '@/hooks/web/useMessage';
 
   import { useUserStore } from '@/store/modules/user';
-  import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
+  import { LoginStateEnum, useFormRules, useFormValid, useLoginState } from './useLogin';
   import { useDesign } from '@/hooks/web/useDesign';
+  import { onKeyStroke } from '@vueuse/core';
   //import { onKeyStroke } from '@vueuse/core';
 
   const ACol = Col;
@@ -107,7 +108,7 @@
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
-  const { notification, createErrorModal } = useMessage();
+  const { notification } = useMessage();
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
@@ -119,13 +120,13 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    account: 'admin',
+    password: 'admin',
   });
 
   const { validForm } = useFormValid(formRef);
 
-  //onKeyStroke('Enter', handleLogin);
+  onKeyStroke('Enter', handleLogin);
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
@@ -137,7 +138,7 @@
       const userInfo = await userStore.login({
         password: data.password,
         username: data.account,
-        mode: 'none', //不要默认的错误提示
+        mode: 'none',
       });
       if (userInfo) {
         notification.success({
@@ -147,11 +148,7 @@
         });
       }
     } catch (error) {
-      createErrorModal({
-        title: t('sys.api.errorTip'),
-        content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
-        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-      });
+      console.error(error.message);
     } finally {
       loading.value = false;
     }

@@ -2,6 +2,7 @@
 // The axios configuration can be changed according to the project, just change the file, other files can be left unchanged
 
 import type { AxiosInstance, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { clone } from 'lodash-es';
 import type { RequestOptions, Result } from '#/axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
@@ -9,16 +10,15 @@ import { VAxios } from './Axios';
 import { checkStatus } from './checkStatus';
 import { useGlobSetting } from '@/hooks/setting';
 import { useMessage } from '@/hooks/web/useMessage';
-import { RequestEnum, ResultEnum, ContentTypeEnum } from '@/enums/httpEnum';
-import { isString, isUndefined, isNull, isEmpty } from '@/utils/is';
+import { ContentTypeEnum, RequestEnum, ResultEnum } from '@/enums/httpEnum';
+import { isEmpty, isNull, isString, isUndefined } from '@/utils/is';
 import { getToken } from '@/utils/auth';
-import { setObjToUrlParams, deepMerge } from '@/utils';
+import { deepMerge, setObjToUrlParams } from '@/utils';
 import { useErrorLogStoreWithOut } from '@/store/modules/errorLog';
 import { useI18n } from '@/hooks/web/useI18n';
-import { joinTimestamp, formatRequestDate } from './helper';
+import { formatRequestDate, joinTimestamp } from './helper';
 import { useUserStoreWithOut } from '@/store/modules/user';
 import { AxiosRetry } from '@/utils/http/axios/axiosRetry';
-import axios from 'axios';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -43,18 +43,18 @@ const transform: AxiosTransform = {
     if (!isTransformResponse) {
       return res.data;
     }
-    // 错误的时候返回
 
-    const { data } = res;
-    if (!data) {
+    // 错误的时候返回
+    if (!res.data) {
       // return '[HTTP] Request has no return value';
       throw new Error(t('sys.api.apiRequestFailed'));
     }
+    const { status } = res;
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message } = data;
+    const { code, data, message } = res.data;
 
     // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && code === ResultEnum.SUCCESS;
+    const hasSuccess = code === ResultEnum.SUCCESS;
     if (hasSuccess) {
       let successMsg = message;
 
@@ -67,14 +67,14 @@ const transform: AxiosTransform = {
       } else if (options.successMessageMode === 'message') {
         createMessage.success(successMsg);
       }
-      return result;
+      return data;
     }
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
     let timeoutMsg = '';
-    switch (code) {
-      case ResultEnum.TIMEOUT:
+    switch (status) {
+      case ResultEnum.UNAUTHORIZED:
         timeoutMsg = t('sys.api.timeoutMessage');
         const userStore = useUserStoreWithOut();
         // 被动登出，带redirect地址
@@ -181,7 +181,7 @@ const transform: AxiosTransform = {
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
-    const msg: string = response?.data?.error?.message ?? '';
+    const msg: string = response?.data?.message ?? '';
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
 
@@ -230,8 +230,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
       {
         // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
         // authentication schemes，e.g: Bearer
-        // authenticationScheme: 'Bearer',
-        authenticationScheme: '',
+        authenticationScheme: 'Bearer',
         timeout: 10 * 1000,
         // 基础接口地址
         // baseURL: globSetting.apiUrl,
