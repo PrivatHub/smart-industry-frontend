@@ -11,7 +11,7 @@ const home: AppRouteModule = {
   meta: {
     orderNo: 10,
     icon: 'ion:grid-outline',
-    title: t('routes.home.home'),
+    title: t('lang.menu.home.home'),
   },
   children: [
     {
@@ -19,7 +19,7 @@ const home: AppRouteModule = {
       name: 'Index',
       component: () => import('@/views/sys/home/index.vue'),
       meta: {
-        title: t('routes.home.index'),
+        title: t('lang.menu.home.index'),
       },
     },
   ],

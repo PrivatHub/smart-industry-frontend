@@ -3,6 +3,10 @@
     "super_admin": "Super Admin"
   },
   "menu": {
+    "home": {
+      "home": "Home",
+      "index": "Index"
+    },
     "dashboard": {
       "dashboard": "Dashboard",
       "workbench": "Workbench",

@@ -3,6 +3,10 @@
     "super_admin": "超级管理员"
   },
   "menu": {
+    "home": {
+      "home": "Home",
+      "index": "首页"
+    },
     "dashboard": {
       "dashboard": "控制面板",
       "workbench": "工作平台",
