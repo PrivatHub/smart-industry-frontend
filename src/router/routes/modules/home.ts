@@ -6,8 +6,8 @@ import { t } from '@/hooks/web/useI18n';
 const home: AppRouteModule = {
   path: '/home',
   name: 'Home',
-  redirect: '/home/index',
   component: LAYOUT,
+  redirect: '/home/index',
   meta: {
     orderNo: 10,
     icon: 'ion:grid-outline',

@@ -29,6 +29,7 @@ export interface GetUserInfoModel {
   id: string | number;
   // 用户名
   username: string;
+  realName: string;
   // 头像
   avatar: string;
   // 介绍
