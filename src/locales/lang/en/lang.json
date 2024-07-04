@@ -11,6 +11,15 @@
       "dashboard": "Dashboard",
       "workbench": "Workbench",
       "analysis": "Analysis"
+    },
+    "system": {
+      "system": "System Management",
+      "user": "User Management",
+      "dept": "Dept Management",
+      "role": "Role Management",
+      "menu": "Permission Management",
+      "log": "Log Management",
+      "config": "Config Management"
     }
   }
 }

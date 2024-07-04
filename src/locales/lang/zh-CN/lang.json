@@ -11,6 +11,15 @@
       "dashboard": "控制面板",
       "workbench": "工作平台",
       "analysis": "数据分析"
+    },
+    "system": {
+      "system": "系统管理",
+      "user": "用户管理",
+      "dept": "部门管理",
+      "role": "角色管理",
+      "menu": "菜单管理",
+      "log": "日志管理",
+      "config": "配置管理"
     }
   }
 }
