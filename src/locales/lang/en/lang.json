@@ -7,6 +7,10 @@
       "home": "Home",
       "index": "Home"
     },
+    "form_design": {
+      "form_design": "Form Design",
+      "example": "Form Example"
+    },
     "dashboard": {
       "dashboard": "Dashboard",
       "workbench": "Workbench",

@@ -7,6 +7,10 @@
       "home": "Home",
       "index": "首页"
     },
+    "form_design": {
+      "form_design": "表单设计",
+      "example": "表单示例"
+    },
     "dashboard": {
       "dashboard": "控制面板",
       "workbench": "工作平台",
