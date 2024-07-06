@@ -1,4 +1,9 @@
 {
+  "button": {
+    "create": "新增",
+    "expand": "展开",
+    "collapse": "折叠"
+  },
   "role": {
     "super_admin": "超级管理员"
   },

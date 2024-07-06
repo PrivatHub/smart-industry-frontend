@@ -85,7 +85,7 @@
     "selectAll": "Select All",
     "unSelectAll": "Cancel Select",
     "expandAll": "Expand All",
-    "unExpandAll": "Collapse all",
+    "unExpandAll": "Collapse All",
     "checkStrictly": "Hierarchical association",
     "checkUnStrictly": "Hierarchical independence"
   },

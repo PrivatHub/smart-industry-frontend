@@ -4,7 +4,7 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
+  import { computed, ref, unref } from 'vue';
   import { BasicModal, useModalInner } from '@/components/Modal';
   import { BasicForm, useForm } from '@/components/Form';
   import { formSchema } from './data';
@@ -24,18 +24,18 @@
   });
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
-    resetFields();
+    await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
-      setFieldsValue({
+      await setFieldsValue({
         ...data.record,
       });
     }
     const treeData = await queryDept();
-    updateSchema({
-      field: 'parentDept',
+    await updateSchema({
+      field: 'parentId',
       componentProps: { treeData },
     });
   });
@@ -45,6 +45,7 @@
   async function handleSubmit() {
     try {
       const values = await validate();
+      console.log(values);
       setModalProps({ confirmLoading: true });
       if (unref(isUpdate)) {
         await updateDept(values);

@@ -7,8 +7,34 @@ enum Api {
   DeptTree = '/admin/dept/query',
 }
 
-export const addDept = (params?: DeptListItem) => defHttp.post({ url: Api.Dept, params });
-export const updateDept = (params?: DeptListItem) => defHttp.put({ url: Api.Dept, params });
+export function addDept(params?: any, mode: ErrorMessageMode = 'message') {
+  return defHttp.post(
+    {
+      url: Api.Dept,
+      params,
+    },
+    { errorMessageMode: mode },
+  );
+}
+
+export function updateDept(params?: any, mode: ErrorMessageMode = 'message') {
+  return defHttp.put(
+    {
+      url: Api.Dept,
+      params,
+    },
+    { errorMessageMode: mode },
+  );
+}
+
+export function deleteDept(params?: any, mode: ErrorMessageMode = 'message') {
+  return defHttp.delete(
+    {
+      url: Api.Dept + '/' + params.id,
+    },
+    { errorMessageMode: mode },
+  );
+}
 
 export function queryDept(params?: DeptListItem, mode: ErrorMessageMode = 'message') {
   return defHttp.post<any>(

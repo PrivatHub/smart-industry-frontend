@@ -1,8 +1,11 @@
 <template>
   <div>
-    <BasicTable @register="registerTable">
+    <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
+        <a-button type="primary" @click="handleCreate">{{ t('lang.button.create') }}</a-button>
+        <a-button type="primary" @click="toggleExpandCollapse">{{
+          isExpanded ? t('lang.button.collapse') : t('lang.button.expand')
+        }}</a-button>
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
@@ -30,16 +33,23 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { BasicTable, useTable, TableAction } from '@/components/Table';
+  import { BasicTable, TableAction, useTable } from '@/components/Table';
   import { columns, searchFormSchema } from './data';
-  import { queryDept } from '@/api/system/dept';
+  import { deleteDept, queryDept } from '@/api/system/dept';
   import { useModal } from '@/components/Modal';
   import DeptModal from './editModal.vue';
+  import { useI18n } from '@/hooks/web/useI18n';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { nextTick, ref } from 'vue';
+
+  const { t } = useI18n();
+  const { notification } = useMessage();
+  const isExpanded = ref(false);
 
   defineOptions({ name: 'DeptManagement' });
 
   const [registerModal, { openModal }] = useModal();
-  const [registerTable, { reload }] = useTable({
+  const [registerTable, { reload, expandAll, collapseAll }] = useTable({
     title: '部门列表',
     api: queryDept,
     columns,
@@ -47,6 +57,7 @@
       labelWidth: 120,
       schemas: searchFormSchema,
     },
+    isTreeTable: true,
     pagination: false,
     striped: false,
     useSearchForm: true,
@@ -76,9 +87,26 @@
   }
 
   function handleDelete(record: Recordable) {
-    console.log(record);
+    deleteDept(record, 'message').then(() => {
+      notification.success({
+        message: t('sys.api.operationSuccess'),
+      });
+      handleSuccess();
+    });
   }
 
+  function toggleExpandCollapse() {
+    if (isExpanded.value) {
+      collapseAll();
+    } else {
+      expandAll();
+    }
+    isExpanded.value = !isExpanded.value;
+  }
+  function onFetchSuccess() {
+    nextTick(expandAll);
+    isExpanded.value = true;
+  }
   function handleSuccess() {
     reload();
   }
