@@ -23,7 +23,8 @@
     },
     "system": {
       "system": "System Management",
-      "user": "User Management",
+      "account": "User Management",
+      "account_detail": "User Detail",
       "dept": "Dept Management",
       "role": "Role Management",
       "menu": "Permission Management",

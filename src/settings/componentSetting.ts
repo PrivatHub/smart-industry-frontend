@@ -1,6 +1,6 @@
 // Used to configure the general configuration of some components without modifying the components
 
-import type { SorterResult } from '../components/Table';
+import type { SorterResult } from '@/components/Table';
 
 export default {
   // basic-table setting
@@ -9,13 +9,13 @@ export default {
     // support xxx.xxx.xxx
     fetchSetting: {
       // The field name of the current page passed to the background
-      pageField: 'page',
+      pageField: 'pageNo',
       // The number field name of each page displayed in the background
       sizeField: 'pageSize',
       // Field name of the form data returned by the interface
-      listField: 'items',
+      listField: 'content',
       // Total number of tables returned by the interface field name
-      totalField: 'total',
+      totalField: 'totalElements',
     },
     // Number of pages that can be selected
     pageSizeOptions: ['10', '50', '80', '100'],
@@ -81,8 +81,8 @@ export default {
       proxyConfig: {
         form: true,
         props: {
-          result: 'items',
-          total: 'total',
+          result: 'content',
+          total: 'totalElements',
         },
       },
       zoomConfig: {},

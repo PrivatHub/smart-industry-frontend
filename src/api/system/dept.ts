@@ -47,3 +47,15 @@ export function queryDept(params?: DeptListItem, mode: ErrorMessageMode = 'messa
     },
   );
 }
+
+export function queryDeptTree(params?: DeptListItem, mode: ErrorMessageMode = 'message') {
+  return defHttp.post<any>(
+    {
+      url: Api.DeptTree,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}

@@ -23,7 +23,8 @@
     },
     "system": {
       "system": "系统管理",
-      "user": "用户管理",
+      "account": "账号管理",
+      "account_detail": "账号详细",
       "dept": "部门管理",
       "role": "角色管理",
       "menu": "菜单管理",

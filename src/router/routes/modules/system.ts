@@ -14,46 +14,46 @@ const system: AppRouteModule = {
     title: t('routes.demo.system.moduleName'),
   },
   children: [
-    // {
-    //   path: 'account',
-    //   name: 'AccountManagement',
-    //   meta: {
-    //     title: t('routes.demo.system.account'),
-    //     ignoreKeepAlive: false,
-    //   },
-    //   component: () => import('@/views/demo/system/account/index.vue'),
-    // },
-    // {
-    //   path: 'account_detail/:id',
-    //   name: 'AccountDetail',
-    //   meta: {
-    //     hideMenu: true,
-    //     title: t('routes.demo.system.account_detail'),
-    //     ignoreKeepAlive: true,
-    //     showMenu: false,
-    //     currentActiveMenu: '/system/account',
-    //   },
-    //   component: () => import('@/views/demo/system/account/AccountDetail.vue'),
-    // },
-    // {
-    //   path: 'role',
-    //   name: 'RoleManagement',
-    //   meta: {
-    //     title: t('routes.demo.system.role'),
-    //     ignoreKeepAlive: true,
-    //   },
-    //   component: () => import('@/views/demo/system/role/index.vue'),
-    // },
+    {
+      path: 'account',
+      name: 'AccountManagement',
+      meta: {
+        title: t('lang.menu.system.account'),
+        ignoreKeepAlive: false,
+      },
+      component: () => import('@/views/system/account/index.vue'),
+    },
+    {
+      path: 'account_detail/:id',
+      name: 'AccountDetail',
+      meta: {
+        hideMenu: true,
+        title: t('lang.menu.system.account_detail'),
+        ignoreKeepAlive: true,
+        showMenu: false,
+        currentActiveMenu: '/system/account',
+      },
+      component: () => import('@/views/system/account/detailPage.vue'),
+    },
+    {
+      path: 'role',
+      name: 'RoleManagement',
+      meta: {
+        title: t('lang.menu.system.role'),
+        ignoreKeepAlive: true,
+      },
+      component: () => import('@/views/system/role/index.vue'),
+    },
 
-    // {
-    //   path: 'menu',
-    //   name: 'MenuManagement',
-    //   meta: {
-    //     title: t('routes.demo.system.menu'),
-    //     ignoreKeepAlive: true,
-    //   },
-    //   component: () => import('@/views/system/menu/index.vue'),
-    // },
+    {
+      path: 'menu',
+      name: 'MenuManagement',
+      meta: {
+        title: t('lang.menu.system.menu'),
+        ignoreKeepAlive: true,
+      },
+      component: () => import('@/views/system/menu/index.vue'),
+    },
     {
       path: 'dept',
       name: 'DeptManagement',
@@ -67,7 +67,7 @@ const system: AppRouteModule = {
     //   path: 'changePassword',
     //   name: 'ChangePassword',
     //   meta: {
-    //     title: t('routes.demo.system.password'),
+    //     title: t('lang.menu.system.password'),
     //     ignoreKeepAlive: true,
     //   },
     //   component: () => import('@/views/demo/system/password/index.vue'),

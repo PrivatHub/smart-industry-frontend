@@ -7,6 +7,16 @@ export const columns: BasicColumn[] = [
     title: '部门名称',
     dataIndex: 'name',
     align: 'left',
+    width: 200,
+  },
+  {
+    title: '成员数量',
+    dataIndex: 'userCount',
+    width: 80,
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
   },
   {
     title: '排序',
@@ -30,8 +40,9 @@ export const columns: BasicColumn[] = [
     width: 180,
   },
   {
-    title: '备注',
-    dataIndex: 'remark',
+    title: '更新时间',
+    dataIndex: 'lastModifiedDate',
+    width: 180,
   },
 ];
 
@@ -40,7 +51,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'name',
     label: '部门名称',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: { span: 8, pull: 1 },
   },
   {
     field: 'enabled',
@@ -48,18 +59,18 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '启用', value: true },
-        { label: '停用', value: false },
+        { label: '启用', value: 'true' },
+        { label: '停用', value: 'false' },
       ],
     },
-    colProps: { span: 8 },
+    colProps: { span: 8, pull: 2 },
   },
 ];
 
 export const formSchema: FormSchema[] = [
   {
     field: 'id',
-    label: '部门ID',
+    label: 'ID',
     component: 'Input',
     show: false,
   },
