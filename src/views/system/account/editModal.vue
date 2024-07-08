@@ -35,7 +35,6 @@
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
-      console.log(data.record);
       rowId.value = data.record.id;
       await setFieldsValue({
         ...data.record,
@@ -73,15 +72,18 @@
   async function handleSubmit() {
     try {
       const values = await validate();
+      values.roleIds = [values.roleIds];
+      values.departmentIds = [values.departmentIds];
       setModalProps({ confirmLoading: true });
-      console.log(values);
+      console.log('handleSubmit', values);
       if (unref(isUpdate)) {
         await updateAccount(values);
       } else {
         await addAccount(values);
       }
       closeModal();
-      emit('success', { isUpdate: unref(isUpdate), values: { ...values, id: rowId.value } });
+      // emit('success', { isUpdate: unref(isUpdate), values: { ...values, id: rowId.value } });
+      emit('success');
     } finally {
       setModalProps({ confirmLoading: false });
     }

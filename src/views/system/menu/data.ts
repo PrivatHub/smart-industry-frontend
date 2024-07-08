@@ -3,12 +3,27 @@ import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import Icon from '@/components/Icon/Icon.vue';
 
+export const isDir = (type: number) => type === 1;
+export const isMenu = (type: number) => type === 2;
+export const isButton = (type: number) => type === 3;
+
 export const columns: BasicColumn[] = [
   {
     title: '菜单名称',
-    dataIndex: 'menuName',
+    dataIndex: 'name',
     width: 200,
     align: 'left',
+  },
+  {
+    title: '菜单类型',
+    dataIndex: 'menuType',
+    width: 80,
+    customRender: ({ record }) => {
+      const type = record.menuType.value;
+      const color = isDir(type) ? 'blue' : isMenu(type) ? 'green' : 'purple';
+      const text = isDir(type) ? '目录' : isMenu(type) ? '菜单' : '按钮';
+      return h(Tag, { color: color }, () => text);
+    },
   },
   {
     title: '图标',
@@ -20,7 +35,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '权限标识',
-    dataIndex: 'permission',
+    dataIndex: 'authority',
     width: 180,
   },
   {
@@ -34,26 +49,21 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '状态',
-    dataIndex: 'status',
+    dataIndex: 'enabled',
     width: 80,
     customRender: ({ record }) => {
-      const status = record.status;
-      const enable = ~~status === 0;
-      const color = enable ? 'green' : 'red';
-      const text = enable ? '启用' : '停用';
+      const enabled = !!record.enabled;
+      const color = enabled ? 'green' : 'red';
+      const text = enabled ? '启用' : '停用';
       return h(Tag, { color: color }, () => text);
     },
   },
   {
     title: '创建时间',
-    dataIndex: 'createTime',
+    dataIndex: 'createdDate',
     width: 180,
   },
 ];
-
-const isDir = (type: string) => type === '1';
-const isMenu = (type: string) => type === '2';
-const isButton = (type: string) => type === '3';
 
 export const searchFormSchema: FormSchema[] = [
   {
@@ -87,12 +97,12 @@ export const formSchema: FormSchema[] = [
     field: 'type',
     label: '菜单类型',
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    defaultValue: 1,
     componentProps: {
       options: [
-        { label: '目录', value: '0' },
-        { label: '菜单', value: '1' },
-        { label: '按钮', value: '2' },
+        { label: '目录', value: 1 },
+        { label: '菜单', value: 2 },
+        { label: '按钮', value: 3 },
       ],
     },
     colProps: { lg: 24, md: 24 },
@@ -120,13 +130,13 @@ export const formSchema: FormSchema[] = [
     field: 'orderNo',
     label: '排序',
     component: 'InputNumber',
+    defaultValue: 999,
     required: true,
   },
   {
     field: 'icon',
     label: '图标',
     component: 'IconPicker',
-    required: true,
     ifShow: ({ values }) => !isButton(values.type),
   },
 
@@ -187,7 +197,6 @@ export const formSchema: FormSchema[] = [
     },
     ifShow: ({ values }) => isMenu(values.type),
   },
-
   {
     field: 'hidden',
     label: '是否隐藏',

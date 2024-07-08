@@ -1,6 +1,10 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
 import { h } from 'vue';
-import { Tag } from 'ant-design-vue';
+import { Switch } from 'ant-design-vue';
+import { useMessage } from '@/hooks/web/useMessage';
+import { updateAccount } from '@/api/system/account';
+
+type CheckedType = boolean | string | number;
 
 export const columns: BasicColumn[] = [
   {
@@ -25,10 +29,31 @@ export const columns: BasicColumn[] = [
     dataIndex: 'enabled',
     width: 80,
     customRender: ({ record }) => {
-      const enable = !!record.enabled;
-      const color = enable ? 'green' : 'red';
-      const text = enable ? '可用' : '禁用';
-      return h(Tag, { color: color }, () => text);
+      if (!Reflect.has(record, 'pendingStatus')) {
+        record.pendingStatus = false;
+      }
+      return h(Switch, {
+        checked: record.enabled === true,
+        checkedChildren: '可用',
+        unCheckedChildren: '禁用',
+        loading: record.pendingStatus,
+        onChange(checked: CheckedType) {
+          record.pendingStatus = true;
+          const newStatus = !!checked;
+          const { createMessage } = useMessage();
+          updateAccount({ ...record, enabled: newStatus })
+            .then(() => {
+              record.enabled = newStatus;
+              createMessage.success(`已成功修改账号状态`).then((r) => r);
+            })
+            .catch(() => {
+              createMessage.error('修改账号状态失败').then((r) => r);
+            })
+            .finally(() => {
+              record.pendingStatus = false;
+            });
+        },
+      });
     },
   },
   {
@@ -89,6 +114,18 @@ export const accountFormSchema: FormSchema[] = [
     field: 'password',
     label: '密码',
     component: 'InputPassword',
+  },
+  {
+    field: 'enabled',
+    label: '状态',
+    component: 'RadioButtonGroup',
+    defaultValue: true,
+    componentProps: {
+      options: [
+        { label: '启用', value: true },
+        { label: '禁用', value: false },
+      ],
+    },
   },
   {
     label: '角色关联',

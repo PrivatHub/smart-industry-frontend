@@ -30,6 +30,18 @@ export function updateMenu(params: any, mode: ErrorMessageMode = 'message') {
   );
 }
 
+export function deleteMenu(params: any, mode: ErrorMessageMode = 'message') {
+  return defHttp.delete(
+    {
+      url: Api.Menu + '/' + params.id,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
 export function queryMenuTree(params?: any, mode: ErrorMessageMode = 'message') {
   return defHttp.post<any>(
     {

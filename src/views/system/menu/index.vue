@@ -31,18 +31,27 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, TableAction, useTable } from '@/components/Table';
+  import { deleteMenu, queryMenuTree } from '@/api/system/menu';
+  import { useMessage } from '@/hooks/web/useMessage';
   import { columns, searchFormSchema } from './data';
-  import { queryMenuTree } from '@/api/system/menu';
   import { useDrawer } from '@/components/Drawer';
+  import { useI18n } from '@/hooks/web/useI18n';
   import MenuDrawer from './editDrawer.vue';
   import { nextTick } from 'vue';
 
   defineOptions({ name: 'MenuManagement' });
 
+  const { t } = useI18n();
+  const { notification } = useMessage();
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerTable, { reload, expandAll }] = useTable({
     title: '菜单列表',
     api: queryMenuTree,
+    beforeFetch: (params) => {
+      params.onlyEnabled = false;
+      params.withoutButton = false;
+      return params;
+    },
     columns,
     formConfig: {
       labelWidth: 120,
@@ -79,7 +88,12 @@
   }
 
   function handleDelete(record: Recordable) {
-    console.log(record);
+    deleteMenu(record).then(() => {
+      notification.success({
+        message: t('sys.api.operationSuccess'),
+      });
+      handleSuccess();
+    });
   }
 
   function handleSuccess() {

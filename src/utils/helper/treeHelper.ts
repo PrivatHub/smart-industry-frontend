@@ -1,3 +1,5 @@
+import { TreeItem } from '@/components/Tree';
+
 interface TreeHelperConfig {
   id: string;
   children: string;
@@ -213,4 +215,31 @@ export function eachTree(treeDatas: any[], callBack: Fn, parentNode = {}) {
       eachTree(element.children, callBack, newNode);
     }
   });
+}
+
+export function findLeafIds(ids: [], tree: TreeItem[], config: Partial<TreeHelperConfig> = {}) {
+  const leafIds = [];
+
+  config = getConfig(config);
+  const id = config.id;
+
+  function traverse(node: any) {
+    if (!node.children || node.children.length === 0) {
+      // @ts-ignore
+      if (ids.includes(node[id])) {
+        // @ts-ignore
+        leafIds.push(node[id]);
+      }
+    } else {
+      node.children.forEach((item) => {
+        traverse(item);
+      });
+    }
+  }
+
+  tree.forEach((node) => {
+    traverse(node);
+  });
+
+  return leafIds;
 }
