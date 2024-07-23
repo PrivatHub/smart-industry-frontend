@@ -2,7 +2,7 @@
   <LoginFormTitle v-show="getShow" class="enter-x" />
   <Form
     class="p-4 enter-x"
-    :model="formData"
+    :model="defaultFormData"
     :rules="getFormRules"
     ref="formRef"
     v-show="getShow"
@@ -11,7 +11,7 @@
     <FormItem name="account" class="enter-x">
       <Input
         size="large"
-        v-model:value="formData.account"
+        v-model:value="defaultFormData.account"
         :placeholder="t('sys.login.userName')"
         class="fix-auto-fill"
       />
@@ -20,7 +20,7 @@
       <InputPassword
         size="large"
         visibilityToggle
-        v-model:value="formData.password"
+        v-model:value="defaultFormData.password"
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
@@ -48,9 +48,9 @@
       <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
         {{ t('sys.login.loginButton') }}
       </Button>
-      <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
+      <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
         {{ t('sys.login.registerButton') }}
-      </Button> -->
+      </Button>
     </FormItem>
     <ARow class="enter-x" :gutter="[16, 16]">
       <ACol :md="8" :xs="24">
@@ -119,7 +119,7 @@
   const loading = ref(false);
   const rememberMe = ref(false);
 
-  const formData = reactive({
+  const defaultFormData = reactive({
     account: 'admin',
     password: 'admin',
   });
@@ -130,14 +130,17 @@
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
+  async function handleRegister() {
+    setLoginState(LoginStateEnum.REGISTER);
+  }
   async function handleLogin() {
-    const data = await validForm();
-    if (!data) return;
+    const formData = await validForm();
+    if (!formData) return;
     try {
       loading.value = true;
       const userInfo = await userStore.login({
-        password: data.password,
-        username: data.account,
+        password: formData.password,
+        username: formData.account,
         mode: 'none',
       });
       if (userInfo) {
@@ -148,7 +151,11 @@
         });
       }
     } catch (error) {
-      console.error(error.message);
+      console.log('Error object:', error);
+      useMessage().createMessage.error({
+        content: t('sys.login.loginFailedDesc'),
+        duration: 3,
+      });
     } finally {
       loading.value = false;
     }

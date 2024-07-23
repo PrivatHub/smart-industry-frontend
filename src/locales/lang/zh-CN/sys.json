@@ -74,6 +74,8 @@
     "rememberMe": "记住我",
     "forgetPassword": "忘记密码?",
     "otherSignIn": "其他登录方式",
+    "loginFailedTitle": "登录失败",
+    "loginFailedDesc": "登录失败，请检查您的账号和密码",
     "loginSuccessTitle": "登录成功",
     "loginSuccessDesc": "欢迎回来",
     "accountPlaceholder": "请输入账号",

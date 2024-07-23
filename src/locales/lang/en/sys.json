@@ -74,6 +74,8 @@
     "rememberMe": "Remember me",
     "forgetPassword": "Forget Password?",
     "otherSignIn": "Sign in with",
+    "loginFailedTitle": "Login failed",
+    "loginFailedDesc": "Login failed, please check your account and password",
     "loginSuccessTitle": "Login successful",
     "loginSuccessDesc": "Welcome back",
     "accountPlaceholder": "Please input username",
